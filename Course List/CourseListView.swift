@@ -22,9 +22,24 @@ struct CourseListView: View {
             .onAppear { getCourses() }
         } else {
             List(courses) { course in
+                
+                //-> List can be replaced by ForEach, remember wrapped by Vstack, wrapped byScrollView
+                
                 Text(course.title)
-                AsyncImage(url: URL(string: course.image))
-                    .presentationContentInteraction(.resizes)
+                AsyncImage(url: URL(string: course.image)) { response in
+                    
+                    switch response {
+                        
+                    case .success(let image):
+                       image
+                            .resizable()
+                            .scaledToFill()
+                        
+                    default:
+                        Text("It didn't work")
+                    }
+                    
+                }
                 
             }
             
