@@ -12,37 +12,26 @@ struct CourseListView: View {
     @State var courses: [Course] = []
     
     var body: some View {
-        if courses.count == 0 {
-            VStack{
-                ProgressView()
-                    .padding()
-                Text("Loading the course...'")
-            }
-            .foregroundStyle(.purple)
-            .onAppear { getCourses() }
-        } else {
-            List(courses) { course in
-                
-                //-> List can be replaced by ForEach, remember wrapped by Vstack, wrapped byScrollView
-                
-                Text(course.title)
-                AsyncImage(url: URL(string: course.image)) { response in
-                    
-                    switch response {
-                        
-                    case .success(let image):
-                       image
-                            .resizable()
-                            .scaledToFill()
-                        
-                    default:
-                        Text("It didn't work")
-                    }
-                    
+        NavigationStack{
+            if courses.count == 0 {
+                VStack{
+                    ProgressView()
+                        .padding()
+                    Text("Loading the course...'")
                 }
-                
+                .foregroundStyle(.purple)
+                .onAppear { getCourses() }
+            } else {
+                ScrollView{
+                    VStack(spacing: 1) {
+                        ForEach(courses) { course in
+                            CourseTileView(course: course)
+                            //-> List can be replaced by ForEach, remember wrapped by Vstack, wrapped byScrollView
+                        }
+                    }
+                }
+                .navigationTitle("ZappyCode Courses")
             }
-            
         }
         // course present the singular we want to display from course
 
