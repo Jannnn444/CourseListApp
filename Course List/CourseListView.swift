@@ -23,6 +23,8 @@ struct CourseListView: View {
         } else {
             List(courses) { course in
                 Text(course.title)
+                AsyncImage(url: URL(string: course.image))
+                    .presentationContentInteraction(.resizes)
                 
             }
             
